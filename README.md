@@ -4,6 +4,7 @@ that can be called by the Viber server if users interacted with Viber bot.
 
 <h4>Tech :</h4>
 1. MySQL 
+
 2. Python - Flask
 
 
