@@ -17,8 +17,31 @@ that can be called by the Viber server if users interacted with Viber bot.
 
 4. Event information, such as unsubscriptions, subscriptions, and messages sent to BOT, is directly sent to Admin  Viber account.
 
+## Project Structure
+- `config`: Configuration files and settings.
+- `interface`: User interface components.
+- `models`: Data models and business logic.
+- `service`: Service layer for handling business logic.
+- `app.py`: Main application file.
+- `requirements.txt`: List of project dependencies.
+- `Dockerfile`: Docker configuration for containerization.
+- `values.py`: Additional configuration values.
 
-Note: This was a small project, so I have not used best software development practices such as using modularization to avoid redundancy, and so on.
+## Installation and Setup
+
+Docker is required.
+
+To to project root direcotry and run
+
+```bash
+docker build -t viberbot .
+```
+
+After image is created run 
+
+```bash
+docker run -d -p 5000:5000 --name bot --restart always --env-file .env viberbot
+```
 
 
 <h4>Demo Images: </h4>
