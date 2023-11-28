@@ -3,86 +3,62 @@ from sqlalchemy.orm import sessionmaker
 from config.db import engine
 from models.member import Member
 
+# Create a session factory, this is more efficient than creating it inside every function
+Session = sessionmaker(bind=engine)
 
 def add_member(member_id: int, name: str):
     """
-    Adds a new member to the config.
+    Adds a new member to the database.
     :param member_id: The ID of the member.
     :param name: The name of the member.
     """
-    # Create a session
-    Session = sessionmaker(bind=engine)
     with Session() as session:
-        # Create a new member instance
         member = Member(id=member_id, name=name)
-        # Add the new member to the session
         session.add(member)
-        # Commit the transaction
         session.commit()
 
 def delete_member(member_id: int):
     """
-    Deletes a member from the config.
-
+    Deletes a member from the database.
     :param member_id: The ID of the member to delete.
     """
-    # Create a session
-    Session = sessionmaker(bind=engine)
     with Session() as session:
-        # Retrieve the member to be deleted
         member = session.query(Member).filter_by(id=member_id).first()
         if member:
-            # Delete the member
             session.delete(member)
-            # Commit the transaction
             session.commit()
 
-def read_members()->list:
+def read_members() -> list:
     """
-    Retrieves all members from the config.
-
+    Retrieves all members from the database.
     :return: A list of Member instances.
     """
-    # Create a session
-    Session = sessionmaker(bind=engine)
     with Session() as session:
-        # Query all members
-        member_list = session.query(Member).all()
-        # No need to commit for read-only operations
-    return member_list
+        return session.query(Member).all()
 
-def read_member(member_id: str):
+def read_member(member_id: int):
     """
-    Retrieves a single member from the config.
-
+    Retrieves a single member from the database.
     :param member_id: The ID of the member to retrieve.
     :return: A Member instance or None if not found.
     """
-    # Create a session
-    Session = sessionmaker(bind=engine)
     with Session() as session:
-        # Retrieve a single member by ID
-        member = session.query(Member).filter_by(id=member_id).first()
-        # No need to commit for read-only operations
-    return member
+        return session.query(Member).filter_by(id=member_id).first()
 
-
-def read_admin_members():
-    Session = sessionmaker(bind=engine)
+def read_admin_members() -> list:
+    """
+    Retrieves all admin members from the database.
+    :return: A list of admin Member instances.
+    """
     with Session() as session:
-        # Retrieve a single member by ID
-        admin_members = session.query(Member).filter_by(type="ADMIN").all()
-        # No need to commit for read-only operations
-    return admin_members
+        return session.query(Member).filter_by(type="ADMIN").all()
 
-
-def is_user_admin(user_id)->bool:
-    Session = sessionmaker(bind=engine)
+def is_user_admin(user_id: int) -> bool:
+    """
+    Checks if a user is an admin.
+    :param user_id: The ID of the user.
+    :return: True if the user is an admin, False otherwise.
+    """
     with Session() as session:
-        # Retrieve a single member by ID
         user = session.query(Member).filter_by(id=user_id).first()
-        # No need to commit for read-only operations
-    if user is not None:
-        return True
-    return False
-
+        return user is not None and user.type == "ADMIN"
