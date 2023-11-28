@@ -27,11 +27,13 @@ that can be called by the Viber server if users interacted with Viber bot.
 - `Dockerfile`: Docker configuration for containerization.
 - `values.py`: Additional configuration values.
 
+NOTE: The server should run on HTTP(S), not HTTP. The Viber API strictly requires HTTPS connection.
+
 ## Installation and Setup
 
 Docker is required.
 
-To to project root direcotry and run
+Go to project root direcotry and run
 
 ```bash
 docker build -t viberbot .
